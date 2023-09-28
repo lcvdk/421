@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Le 421</h1>
+  <div id="phase" style="color:green;font-size: 1em;"></div>
+  <button id="lanceDe">jouer</button>
+  <div id="pot"></div>
+  <div id="resultat" style="font-size: 2em"></div>
+  <div id="message"></div>
+  <div id="stock" style="background-color: teal;"></div>
+
+
+  
+  <script>
+    const jetsDeStock = []
+
+    const btn = document.getElementById("lanceDe");
+    const phase = document.getElementById("phase");
+    const pot = document.getElementById("pot");
+    const resultat = document.getElementById("resultat");
+    const message = document.getElementById("message")
+    const afficheJetDestock = document.getElementById("stock");
+
+    btn.addEventListener('click', () => {
+      phase.innerHTML = "Phase de Charge"
+      let resultatLance = charge(joueur1)
+
+      console.log("resLancé :", resultatLance)
+      jetsDeStock.push(resultatLance.sortedCombo)
+      resultat.innerHTML = resultatLance.sortedCombo
+      message.innerHTML = resultatLance.resultatTxt.message
+      if(jetsDeStock) { afficheJetDestock.innerHTML = `Joué précédemment : ${jetsDeStock}`}
+      
+      console.log("jets DANS la fonction", jetsDeStock)
+    })
+
+    
+    console.log("jets OUT de la fonction", jetsDeStock)
+    
+    
+    
+  </script>
+  <script src="combo.api.js" ></script>
+  <script src="main.js" ></script>
+ 
+</body>
+</html>
