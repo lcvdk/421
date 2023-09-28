@@ -12,12 +12,13 @@
   <div id="pot"></div>
   <div id="resultat" style="font-size: 2em"></div>
   <div id="message"></div>
-  <div id="stock" style="background-color: teal;"></div>
+  <div id="stock" style="border-color: teal;  border-style: solid;"></div>
 
 
   
   <script>
     const jetsDeStock = []
+    let potJetons = 21
 
     const btn = document.getElementById("lanceDe");
     const phase = document.getElementById("phase");
@@ -26,17 +27,27 @@
     const message = document.getElementById("message")
     const afficheJetDestock = document.getElementById("stock");
 
+    pot.innerHTML = potJetons
+
     btn.addEventListener('click', () => {
       phase.innerHTML = "Phase de Charge"
       let resultatLance = charge(joueur1)
 
+      let affichageInfo = `vous avez obtenu ${resultatLance.resultatTxt[0].name} qui vaut ${resultatLance.resultatTxt[0].nbJeton} jeton(s)`
+      
+
       console.log("resLancé :", resultatLance)
       jetsDeStock.push(resultatLance.sortedCombo)
       resultat.innerHTML = resultatLance.sortedCombo
-      message.innerHTML = resultatLance.resultatTxt.message
+      message.innerHTML = affichageInfo
       if(jetsDeStock) { afficheJetDestock.innerHTML = `Joué précédemment : ${jetsDeStock}`}
       
       console.log("jets DANS la fonction", jetsDeStock)
+      
+      potJetons -= resultatLance.resultatTxt[0].nbJeton
+      if (potJetons <= 0) potJetons = 0
+
+      pot.innerHTML = potJetons
     })
 
     
