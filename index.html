@@ -3,16 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>421 super Game</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>Le 421</h1>
-  <div id="phase" style="color:green;font-size: 1em;"></div>
-  <button id="lanceDe">jouer</button>
-  <div id="pot"></div>
-  <div id="resultat" style="font-size: 2em"></div>
-  <div id="message"></div>
-  <div id="stock" style="border-color: teal;  border-style: solid;"></div>
+  <h1 id="title421">Le 421</h1>
+  <div>
+      <div id="phase" style="color:rgb(255, 251, 0);font-size: 1em;"></div>
+      <div id="pot"></div>
+      <div id="resultat"></div>
+      <div id="message"></div>
+      <button id="lanceDe">jouer</button>
+      <div>
+        
+        <div id="stock"></div>
+      </div>
+    </div>
 
 
   
@@ -27,7 +36,7 @@
     const message = document.getElementById("message")
     const afficheJetDestock = document.getElementById("stock");
 
-    pot.innerHTML = potJetons
+    pot.innerHTML = `Jetons restants : <strong>${potJetons}</strong>`
 
     btn.addEventListener('click', () => {
       phase.innerHTML = "Phase de Charge"
@@ -47,7 +56,7 @@
       potJetons -= resultatLance.resultatTxt[0].nbJeton
       if (potJetons <= 0) potJetons = 0
 
-      pot.innerHTML = potJetons
+      pot.innerHTML = `Jetons restants : ${potJetons}`
     })
 
     

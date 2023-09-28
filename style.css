@@ -1,0 +1,22 @@
+#title421 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2em;
+  color : white;
+  text-align: center; 
+}
+
+
+body {
+  background-color: teal;
+  font-family: 'Poppins', sans-serif;
+}
+
+#resultat {
+  font-size : 3em;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+}
+
+#lanceDe {
+  width : 8em;
+}
