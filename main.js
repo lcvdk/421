@@ -6,6 +6,13 @@ const joueur1 = {
 
 }
 
+const joueur2 = {
+  de1 : 0,
+  de2 : 0,
+  de3 : 0,
+
+}
+
 const verifCombo = (de3x) => {
   let compaCombo =  combo.filter((x) => x.id === de3x  )
   console.log("compacombo : " , compaCombo)

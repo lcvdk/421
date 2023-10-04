@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,22 +10,39 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;800&display=swap" rel="stylesheet">
 </head>
+
 <body>
-  <h1 id="title421">Le 421</h1>
-  <div>
-      <div id="phase" style="color:rgb(255, 251, 0);font-size: 1em;"></div>
-      <div id="pot"></div>
-      <div id="resultat"></div>
-      <div id="message"></div>
-      <button id="lanceDe">jouer</button>
+  <div id="tableDeJeu">
+    <h1 id="title421">Le 421</h1>
+    <div id="playzone">
+      <div id="topInfo">
+        <div id="phase" style="color:rgb(255, 251, 0);font-size: 1em;"></div>
+        <div id="pot"></div>
+      </div>
+        <div id="zoneCentrale">
+          <div id="resultat">
+            <div class="de"></div>
+            <div class="de"></div>
+            <div class="de"></div>
+          </div>
+          <div id="message"></div>
+        </div>  
       <div>
-        
+      <div id="interaction">
+        <button id="lanceDe">jouer</button>
+      </div>
+
+      <div id="interfaceJoueurs">
+
+      </div>
+
         <div id="stock"></div>
       </div>
     </div>
+  </div>
 
 
-  
+
   <script>
     const jetsDeStock = []
     let potJetons = 21
@@ -39,34 +57,37 @@
     pot.innerHTML = `Jetons restants : <strong>${potJetons}</strong>`
 
     btn.addEventListener('click', () => {
+      pot.style.display = 'inline'
       phase.innerHTML = "Phase de Charge"
       let resultatLance = charge(joueur1)
 
       let affichageInfo = `vous avez obtenu ${resultatLance.resultatTxt[0].name} qui vaut ${resultatLance.resultatTxt[0].nbJeton} jeton(s)`
-      
+
 
       console.log("resLancé :", resultatLance)
       jetsDeStock.push(resultatLance.sortedCombo)
       resultat.innerHTML = resultatLance.sortedCombo
       message.innerHTML = affichageInfo
-      if(jetsDeStock) { afficheJetDestock.innerHTML = `Joué précédemment : ${jetsDeStock}`}
-      
+      if (jetsDeStock) { afficheJetDestock.innerHTML = `Joué précédemment : ${jetsDeStock}` }
+
       console.log("jets DANS la fonction", jetsDeStock)
-      
+
       potJetons -= resultatLance.resultatTxt[0].nbJeton
       if (potJetons <= 0) potJetons = 0
 
       pot.innerHTML = `Jetons restants : ${potJetons}`
     })
 
-    
+
     console.log("jets OUT de la fonction", jetsDeStock)
-    
-    
-    
+
+
+
   </script>
-  <script src="combo.api.js" ></script>
-  <script src="main.js" ></script>
- 
+  <script src="combo.api.js"></script>
+  <script src="main.js"></script>
+
 </body>
+<footer id="footer">by LcVdk </footer>
+
 </html>
