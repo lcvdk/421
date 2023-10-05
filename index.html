@@ -21,9 +21,9 @@
       </div>
         <div id="zoneCentrale">
           <div id="resultat">
-            <div class="de"></div>
-            <div class="de"></div>
-            <div class="de"></div>
+            <div class="de"  id="de1"></div>
+            <div class="de" id="de2"></div>
+            <div class="de" id="de3"></div>
           </div>
           <div id="message"></div>
         </div>  
@@ -50,7 +50,9 @@
     const btn = document.getElementById("lanceDe");
     const phase = document.getElementById("phase");
     const pot = document.getElementById("pot");
-    const resultat = document.getElementById("resultat");
+    const resultatDe1 = document.getElementById("de1");
+    const resultatDe2 = document.getElementById("de2");
+    const resultatDe3 = document.getElementById("de3");
     const message = document.getElementById("message")
     const afficheJetDestock = document.getElementById("stock");
 
@@ -60,13 +62,16 @@
       pot.style.display = 'inline'
       phase.innerHTML = "Phase de Charge"
       let resultatLance = charge(joueur1)
+      resultatDe1.innerHTML = `<p>${resultatLance.de1}</p>`;
+      resultatDe2.innerHTML = `<p>${resultatLance.de2}</p>`;
+      resultatDe3.innerHTML = `<p>${resultatLance.de3}</p>`;
 
       let affichageInfo = `vous avez obtenu ${resultatLance.resultatTxt[0].name} qui vaut ${resultatLance.resultatTxt[0].nbJeton} jeton(s)`
 
 
       console.log("resLancé :", resultatLance)
       jetsDeStock.push(resultatLance.sortedCombo)
-      resultat.innerHTML = resultatLance.sortedCombo
+      // resultat.innerHTML = resultatLance.sortedCombo
       message.innerHTML = affichageInfo
       if (jetsDeStock) { afficheJetDestock.innerHTML = `Joué précédemment : ${jetsDeStock}` }
 

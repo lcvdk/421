@@ -19,7 +19,7 @@ const verifCombo = (de3x) => {
   if(compaCombo.length === 0)  {
     let infoDe = {};
     infoDe.id = de3x;
-    infoDe.name = `une combinaison basique`;
+    infoDe.name = de3x;
     infoDe.nbJeton = 1;
     compaCombo.push(infoDe)
     return compaCombo 
@@ -68,7 +68,7 @@ const charge = (joueur) => {
   // 
   joueur.resultatTxt = verifCombo(sortedJoined)
 
-  console.log(joueur)
+  console.log("joueur :",joueur)
 
   return joueur
 
