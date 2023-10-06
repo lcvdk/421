@@ -17,6 +17,18 @@
   
 }
 
+#stock {
+  background-color: crimson;
+  height: 5em;
+  display: flex;
+}
+
+.playerRolls {
+  background-color: lightslategray;
+  flex-basis : 50%;
+  margin: 0.2em;
+}
+
 
 .de {
   height : 3em;
@@ -42,7 +54,7 @@
   color : white;
   text-align: center; 
   
-  background-color: brown;
+  
   height: 1.5em;
 }
 
@@ -93,7 +105,7 @@ body {
 }
 
 
-#lanceDe {
+.button {
   margin-top: 1em;
   width : 8em;
   height : 2.5em;
@@ -107,4 +119,9 @@ body {
 #footer {
   color : white;
   text-align: center;
+}
+
+
+.stock {
+  display:flex;
 }

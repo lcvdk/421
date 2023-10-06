@@ -19,72 +19,191 @@
         <div id="phase" style="color:rgb(255, 251, 0);font-size: 1em;"></div>
         <div id="pot"></div>
       </div>
-        <div id="zoneCentrale">
-          <div id="resultat">
-            <div class="de"  id="de1"></div>
-            <div class="de" id="de2"></div>
-            <div class="de" id="de3"></div>
-          </div>
-          <div id="message"></div>
-        </div>  
+      <div id="zoneCentrale">
+        <div id="resultat">
+          <div class="de" id="de1"></div>
+          <div class="de" id="de2"></div>
+          <div class="de" id="de3"></div>
+        </div>
+        <div id="message"></div>
+      </div>
       <div>
-      <div id="interaction">
-        <button id="lanceDe">jouer</button>
-      </div>
+        <div id="interaction">
+          <button class="button" id="lanceJeu">Start</button>
+          <button class="button" id="lanceDe">jouer</button>
+        </div>
 
-      <div id="interfaceJoueurs">
+        <div id="interfaceJoueurs">
+
+        </div>
 
       </div>
-
-        <div id="stock"></div>
-      </div>
+    </div>
+    <div id="stock">
+      <div class="playerRolls" id="stockJoueur1"></div>
+      <div class="playerRolls" id="stockJoueur2"></div>
     </div>
   </div>
 
 
 
   <script>
-    const jetsDeStock = []
-    let potJetons = 21
+    const jetsDeStockJoueur1 = []
+    const jetsDeStockJoueur2 = []
 
-    const btn = document.getElementById("lanceDe");
+
+    //future customizations
+    let mainPlayer;
+    let nbJoueur = 2;
+    let potJetons = 21;
+    let nbJetDe = nbJoueur;
+
+
+    //dom
+    const btnPlay = document.getElementById("lanceDe");
+    const btnStart = document.getElementById("lanceJeu");
     const phase = document.getElementById("phase");
     const pot = document.getElementById("pot");
     const resultatDe1 = document.getElementById("de1");
     const resultatDe2 = document.getElementById("de2");
     const resultatDe3 = document.getElementById("de3");
     const message = document.getElementById("message")
-    const afficheJetDestock = document.getElementById("stock");
 
-    pot.innerHTML = `Jetons restants : <strong>${potJetons}</strong>`
+    const afficheJetDeJoueur1 = document.getElementById("stockJoueur1")
+    const afficheJetDeJoueur2 = document.getElementById("stockJoueur2")
 
-    btn.addEventListener('click', () => {
+    pot.innerHTML = `Jetons restants : <span style="font-weight:bold">${potJetons}</span>`
+
+    //BOUTON START
+    btnStart.addEventListener('click', () => {
+      let random = jouerDe(1, nbJoueur + 1)
+      console.log('random ' + random)
+      if (random == 1) {
+        mainPlayer = joueur1
+        mainPlayer.order = 1
+        joueur2.order = 2
+      }
+      else {
+        mainPlayer = joueur2;
+        mainPlayer.order = 1;
+        joueur1.order = 2;
+      }
+      console.log('Main Pseudo : ' + mainPlayer.pseudo + " order : " + mainPlayer.order);
+
+      //rends visible le pot
       pot.style.display = 'inline'
-      phase.innerHTML = "Phase de Charge"
-      let resultatLance = charge(joueur1)
+      //affiche la phase charge pour le mainPlayer
+      phase.innerHTML = `Phase de Charge pour ${mainPlayer.pseudo}`
+      // TODO  faire apparaitre le bouton jouer et disparaitre le bouton start
+
+    })
+
+
+    // BOUTON JOUER
+    btnPlay.addEventListener('click', () => {
+
+      //Lance les jets de dés      
+      let resultatLance = charge(mainPlayer)
+      //affichage dans les 3 carrés
       resultatDe1.innerHTML = `<p>${resultatLance.de1}</p>`;
       resultatDe2.innerHTML = `<p>${resultatLance.de2}</p>`;
       resultatDe3.innerHTML = `<p>${resultatLance.de3}</p>`;
 
-      let affichageInfo = `vous avez obtenu ${resultatLance.resultatTxt[0].name} qui vaut ${resultatLance.resultatTxt[0].nbJeton} jeton(s)`
+      //formatage du texte d'info  
+      let affichageInfo = `vous avez obtenu <span style="font-weight:bold">${resultatLance.resultatTxt[0].name}</span> qui vaut ${resultatLance.resultatTxt[0].nbJeton} jeton(s)`
+      //affichage texte d'info
+      message.innerHTML = affichageInfo
 
 
       console.log("resLancé :", resultatLance)
-      jetsDeStock.push(resultatLance.sortedCombo)
-      // resultat.innerHTML = resultatLance.sortedCombo
-      message.innerHTML = affichageInfo
-      if (jetsDeStock) { afficheJetDestock.innerHTML = `Joué précédemment : ${jetsDeStock}` }
-
-      console.log("jets DANS la fonction", jetsDeStock)
-
-      potJetons -= resultatLance.resultatTxt[0].nbJeton
-      if (potJetons <= 0) potJetons = 0
-
-      pot.innerHTML = `Jetons restants : ${potJetons}`
-    })
 
 
-    console.log("jets OUT de la fonction", jetsDeStock)
+      if (resultatLance.sortedCombo) {
+        if (mainPlayer.id == 1) {
+          //affichage
+          jetsDeStockJoueur1.push(resultatLance.sortedCombo)
+          afficheJetDeJoueur1.innerHTML = `${joueur1.pseudo} : </br> ${jetsDeStockJoueur1}`
+          //infos pour la comparaison
+
+
+        } else {
+          jetsDeStockJoueur2.push(resultatLance.sortedCombo)
+          afficheJetDeJoueur2.innerHTML = `${joueur2.pseudo} : </br> ${jetsDeStockJoueur2}`
+        }
+      }
+
+
+
+
+
+
+      //changement de joueur
+      if (mainPlayer.id == 1) mainPlayer = joueur2
+      else mainPlayer = joueur1
+      console.log('mainPlayer end 2 : ' + mainPlayer.pseudo)
+      console.log("nb jet dé btn jouer : " + nbJetDe)
+      nbJetDe = (parseInt(nbJetDe)) - 1
+      console.log("nb jet dé btn jouer fin : " + nbJetDe)
+      phase.innerHTML = `Phase de Charge pour ${mainPlayer.pseudo}`
+
+
+      //comparaison des resultats quand le 2e jet a été effectué
+      if (parseInt(nbJetDe) == 0) {
+        console.log("faut calculer")
+
+        console.log("J1 : " + joueur1.resultatTxt[0].nbJeton)
+        console.log("J2 : " + joueur2.resultatTxt[0].nbJeton)
+
+        // 1ere etape comparer la valeur de Nombre de jeton du coup joué 
+        // TODO cas nenette
+        // TODO rajouter sur l'interface le nombre de jetons des joueurs
+        // TODO faire les calculs du nombre de jeton 
+
+
+        if (joueur1.resultatTxt[0].nbJeton > joueur2.resultatTxt[0].nbJeton) {
+          console.log(`${Joueur1.pseudo} gagne et ${Joueur2.pseudo} reçoit ${joueur1.resultatTxt[0].nbJeton} jetons`);
+        }
+        else if (joueur2.resultatTxt[0].nbJeton > joueur1.resultatTxt[0].nbJeton) {
+          console.log(`${joueur2.pseudo} gagne et ${joueur1.pseudo} reçoit ${joueur2.resultatTxt[0].nbJeton} jetons`);
+
+          // nombre de jetons égaux  
+        } else if (joueur1.resultatTxt[0].nbJeton == joueur2.resultatTxt[0].nbJeton) {
+
+          // comparaison du rank  (plus petit est le plus important)
+          if (joueur1.resultatTxt[0].rank > joueur2.resultatTxt[0].rank) {
+            console.log(`${joueur2.pseudo} gagne avec son ${joueur2.resultatTxt[0].id}`)
+          } else if (joueur2.resultatTxt[0].rank > joueur1.resultatTxt[0].rank) {
+            console.log(`${joueur1.pseudo} gagne avec son ${joueur1.resultatTxt[0].id}`)
+
+            // rank = rank    
+          } else if (joueur2.resultatTxt[0].rank == joueur1.resultatTxt[0].rank) {
+
+            if (joueur1.resultatTxt[0].id > joueur2.resultatTxt[0].id) {
+              console.log(`${joueur1.pseudo} gagne avec son ${joueur1.resultatTxt[0].id}`)
+
+            } else if (joueur2.resultatTxt[0].id > joueur1.resultatTxt[0].id) {
+              console.log(`${joueur2.pseudo} gagne avec son ${joueur2.resultatTxt[0].id}`)
+
+            } else {
+              console.log(`égalité`)
+
+            }
+          }
+        }
+
+          potJetons -= resultatLance.resultatTxt[0].nbJeton
+          if (potJetons <= 0) potJetons = 0
+
+          //affichage du pot
+          pot.innerHTML = `Jetons restants : ${potJetons}`
+
+          nbJetDe = nbJoueur
+        }
+      
+      });
+
+
+
 
 
 

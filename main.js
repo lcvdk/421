@@ -3,6 +3,14 @@ const joueur1 = {
   de1 : 0,
   de2 : 0,
   de3 : 0,
+  pseudo: "joueur1",
+  id: 1,
+  order: 0 ,
+  jetons: 0,
+  jetDeStock : [
+
+  ]
+  
 
 }
 
@@ -10,8 +18,16 @@ const joueur2 = {
   de1 : 0,
   de2 : 0,
   de3 : 0,
+  pseudo: "joueur2",
+  id : 2,
+  order: 0,
+  jetons: 0,
+  jetDeStock : [
 
+  ]
 }
+
+
 
 const verifCombo = (de3x) => {
   let compaCombo =  combo.filter((x) => x.id === de3x  )
@@ -21,6 +37,7 @@ const verifCombo = (de3x) => {
     infoDe.id = de3x;
     infoDe.name = de3x;
     infoDe.nbJeton = 1;
+    infoDe.rank = 
     compaCombo.push(infoDe)
     return compaCombo 
   }
