@@ -40,8 +40,12 @@
       </div>
     </div>
     <div id="stock">
-      <div class="playerRolls" id="stockJoueur1"></div>
-      <div class="playerRolls" id="stockJoueur2"></div>
+      <div class="playerRolls" id="stockJoueur1">
+      </div>
+      <div id="jetonJ1"></div>
+      <div class="playerRolls" id="stockJoueur2">
+      </div>
+      <div id="jetonJ2"></div>
     </div>
   </div>
 
@@ -69,6 +73,8 @@
     const resultatDe3 = document.getElementById("de3");
     const message = document.getElementById("message")
 
+    const afficheJetonsJ1 = document.getElementById("jetonJ1");
+    const afficheJetonsJ2 = document.getElementById("jetonJ2");
     const afficheJetDeJoueur1 = document.getElementById("stockJoueur1")
     const afficheJetDeJoueur2 = document.getElementById("stockJoueur2")
 
@@ -95,6 +101,10 @@
       //affiche la phase charge pour le mainPlayer
       phase.innerHTML = `Phase de Charge pour ${mainPlayer.pseudo}`
       // TODO  faire apparaitre le bouton jouer et disparaitre le bouton start
+      
+      //afficher le nombre de jetons reçus par les joueurs
+      afficheJetonsJ1.innerHTML = `Jetons de ${joueur1.pseudo} : ${joueur1.jetons}`;
+      afficheJetonsJ2.innerHTML = `Jetons de ${joueur2.pseudo} : ${joueur2.jetons}`;
 
     })
 
@@ -156,51 +166,90 @@
 
         // 1ere etape comparer la valeur de Nombre de jeton du coup joué 
         // TODO cas nenette
-        // TODO rajouter sur l'interface le nombre de jetons des joueurs
-        // TODO faire les calculs du nombre de jeton 
 
+        if(joueur1.resultatTxt[0].id == 221 && joueur2.resultatTxt[0].id == 221){
+          message.innerHTML = `égalité pas de jeton attribué`
+        } else if (joueur1.resultatTxt[0].id == 221) {
+            let tempo = joueur2.resultatTxt[0].nbJeton
+            if (tempo < 2) tempo = 2;
+            joueur1.jetons += tempo;
+            mainPlayer = joueur1;
+        } else if (joueur2.resultatTxt[0].id == 221){
+            let tempo = joueur1.resultatTxt[0].nbJeton
+            if (tempo < 2) tempo = 2;
+            joueur2.jetons += tempo;
+            mainPlayer = joueur2;
+        }
 
         if (joueur1.resultatTxt[0].nbJeton > joueur2.resultatTxt[0].nbJeton) {
-          console.log(`${Joueur1.pseudo} gagne et ${Joueur2.pseudo} reçoit ${joueur1.resultatTxt[0].nbJeton} jetons`);
+          message.innerHTML = `${joueur1.pseudo} gagne et ${joueur2.pseudo} reçoit ${joueur1.resultatTxt[0].nbJeton} jetons`;
+          // adaptation du pot et du nbJeton du joueur concerné
+          potJetons -= joueur1.resultatTxt[0].nbJeton;
+          joueur2.jetons += joueur1.resultatTxt[0].nbJeton
+          mainPlayer = joueur2 
+
+        
         }
         else if (joueur2.resultatTxt[0].nbJeton > joueur1.resultatTxt[0].nbJeton) {
-          console.log(`${joueur2.pseudo} gagne et ${joueur1.pseudo} reçoit ${joueur2.resultatTxt[0].nbJeton} jetons`);
+          message.innerHTML = `${joueur2.pseudo} gagne et ${joueur1.pseudo} reçoit ${joueur2.resultatTxt[0].nbJeton} jetons`;
+          potJetons -= joueur2.resultatTxt[0].nbJeton;
+          joueur1.jetons += joueur2.resultatTxt[0].nbJeton
+          mainPlayer = joueur1
 
           // nombre de jetons égaux  
         } else if (joueur1.resultatTxt[0].nbJeton == joueur2.resultatTxt[0].nbJeton) {
 
           // comparaison du rank  (plus petit est le plus important)
           if (joueur1.resultatTxt[0].rank > joueur2.resultatTxt[0].rank) {
-            console.log(`${joueur2.pseudo} gagne avec son ${joueur2.resultatTxt[0].id}`)
+            message.innerHTML = `${joueur2.pseudo} gagne avec son ${joueur2.resultatTxt[0].id}`
+            potJetons -= joueur2.resultatTxt[0].nbJeton;
+            joueur1.jetons += joueur2.resultatTxt[0].nbJeton
+            mainPlayer = joueur1
+
           } else if (joueur2.resultatTxt[0].rank > joueur1.resultatTxt[0].rank) {
-            console.log(`${joueur1.pseudo} gagne avec son ${joueur1.resultatTxt[0].id}`)
+            message.innerHTML = `${joueur1.pseudo} gagne avec son ${joueur1.resultatTxt[0].id}`
+            potJetons -= joueur1.resultatTxt[0].nbJeton;
+            joueur2.jetons += joueur1.resultatTxt[0].nbJeton
+            mainPlayer = joueur2
 
             // rank = rank    
           } else if (joueur2.resultatTxt[0].rank == joueur1.resultatTxt[0].rank) {
 
             if (joueur1.resultatTxt[0].id > joueur2.resultatTxt[0].id) {
-              console.log(`${joueur1.pseudo} gagne avec son ${joueur1.resultatTxt[0].id}`)
+              message.innerHTML = `${joueur1.pseudo} gagne avec son ${joueur1.resultatTxt[0].id}`
+              potJetons -= joueur1.resultatTxt[0].nbJeton;
+              joueur2.jetons += joueur1.resultatTxt[0].nbJeton
+              mainPlayer = joueur2
+              
 
             } else if (joueur2.resultatTxt[0].id > joueur1.resultatTxt[0].id) {
-              console.log(`${joueur2.pseudo} gagne avec son ${joueur2.resultatTxt[0].id}`)
+              message.innerHTML = `${joueur2.pseudo} gagne avec son ${joueur2.resultatTxt[0].id}`
+              potJetons -= joueur2.resultatTxt[0].nbJeton;
+              joueur1.jetons += joueur2.resultatTxt[0].nbJeton
+              mainPlayer = joueur1
 
             } else {
-              console.log(`égalité`)
+              message.innerHTML = `égalité pas de jeton attribué`
 
             }
           }
         }
 
-          potJetons -= resultatLance.resultatTxt[0].nbJeton
-          if (potJetons <= 0) potJetons = 0
+      afficheJetonsJ1.innerHTML = `Jetons de ${joueur1.pseudo} : ${joueur1.jetons}`;
+      afficheJetonsJ2.innerHTML = `Jetons de ${joueur2.pseudo} : ${joueur2.jetons}`;
 
-          //affichage du pot
-          pot.innerHTML = `Jetons restants : ${potJetons}`
 
-          nbJetDe = nbJoueur
-        }
-      
-      });
+        
+        
+        if (potJetons <= 0) potJetons = 0
+
+        //affichage du pot
+        pot.innerHTML = `Jetons restants : ${potJetons}`
+
+        nbJetDe = nbJoueur
+      }
+
+    });
 
 
 
