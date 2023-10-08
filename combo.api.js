@@ -102,6 +102,6 @@ const combo = [
     id: 221,
     name: "Nenette",
     nbJeton: 2,
-    rank:5
+    rank:6
   },
 ];

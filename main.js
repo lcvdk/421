@@ -37,7 +37,7 @@ const verifCombo = (de3x) => {
     infoDe.id = de3x;
     infoDe.name = de3x;
     infoDe.nbJeton = 1;
-    infoDe.rank = 
+    infoDe.rank = 5;
     compaCombo.push(infoDe)
     return compaCombo 
   }
@@ -45,7 +45,14 @@ const verifCombo = (de3x) => {
 }
   
 
-
+function donneJeton (potJetons, nbJeton)  {
+  if(nbJeton > potJetons) {
+    return nbJeton = potJetons
+  } else {
+    return nbJeton
+  }
+  
+}
 
 
 

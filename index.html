@@ -172,28 +172,30 @@
         } else if (joueur1.resultatTxt[0].id == 221) {
             let tempo = joueur2.resultatTxt[0].nbJeton
             if (tempo < 2) tempo = 2;
-            joueur1.jetons += tempo;
+            joueur1.jetons += donneJeton(potJetons, tempo);
+            potJetons -= tempo
             mainPlayer = joueur1;
         } else if (joueur2.resultatTxt[0].id == 221){
             let tempo = joueur1.resultatTxt[0].nbJeton
             if (tempo < 2) tempo = 2;
-            joueur2.jetons += tempo;
+            joueur2.jetons += donneJeton(potJetons, tempo);
+            potJetons -= tempo
             mainPlayer = joueur2;
         }
 
         if (joueur1.resultatTxt[0].nbJeton > joueur2.resultatTxt[0].nbJeton) {
-          message.innerHTML = `${joueur1.pseudo} gagne et ${joueur2.pseudo} reçoit ${joueur1.resultatTxt[0].nbJeton} jetons`;
+          message.innerHTML = `${joueur1.pseudo} gagne et ${joueur2.pseudo} reçoit ${donneJeton(potJetons, joueur1.resultatTxt[0].nbJeton)} jetons`;
           // adaptation du pot et du nbJeton du joueur concerné
+          joueur2.jetons += donneJeton(potJetons, joueur1.resultatTxt[0].nbJeton);
           potJetons -= joueur1.resultatTxt[0].nbJeton;
-          joueur2.jetons += joueur1.resultatTxt[0].nbJeton
           mainPlayer = joueur2 
 
         
         }
         else if (joueur2.resultatTxt[0].nbJeton > joueur1.resultatTxt[0].nbJeton) {
-          message.innerHTML = `${joueur2.pseudo} gagne et ${joueur1.pseudo} reçoit ${joueur2.resultatTxt[0].nbJeton} jetons`;
+          joueur1.jetons += donneJeton(potJetons, joueur2.resultatTxt[0].nbJeton);
+          message.innerHTML = `${joueur2.pseudo} gagne et ${joueur1.pseudo} reçoit ${donneJeton(potJetons, joueur2.resultatTxt[0].nbJeton)} jetons`;
           potJetons -= joueur2.resultatTxt[0].nbJeton;
-          joueur1.jetons += joueur2.resultatTxt[0].nbJeton
           mainPlayer = joueur1
 
           // nombre de jetons égaux  
@@ -201,31 +203,31 @@
 
           // comparaison du rank  (plus petit est le plus important)
           if (joueur1.resultatTxt[0].rank > joueur2.resultatTxt[0].rank) {
-            message.innerHTML = `${joueur2.pseudo} gagne avec son ${joueur2.resultatTxt[0].id}`
+            joueur1.jetons += donneJeton(potJetons, joueur2.resultatTxt[0].nbJeton);
+            message.innerHTML = `${joueur2.pseudo} gagne et ${joueur1.pseudo} reçoit ${donneJeton(potJetons, joueur2.resultatTxt[0].nbJeton)} jetons`
             potJetons -= joueur2.resultatTxt[0].nbJeton;
-            joueur1.jetons += joueur2.resultatTxt[0].nbJeton
             mainPlayer = joueur1
 
           } else if (joueur2.resultatTxt[0].rank > joueur1.resultatTxt[0].rank) {
-            message.innerHTML = `${joueur1.pseudo} gagne avec son ${joueur1.resultatTxt[0].id}`
+            message.innerHTML = `${joueur1.pseudo} gagne et ${joueur2.pseudo} reçoit ${donneJeton(potJetons, joueur1.resultatTxt[0].nbJeton)} jetons`;
+            joueur2.jetons += donneJeton(potJetons, joueur1.resultatTxt[0].nbJeton);
             potJetons -= joueur1.resultatTxt[0].nbJeton;
-            joueur2.jetons += joueur1.resultatTxt[0].nbJeton
             mainPlayer = joueur2
 
             // rank = rank    
           } else if (joueur2.resultatTxt[0].rank == joueur1.resultatTxt[0].rank) {
 
             if (joueur1.resultatTxt[0].id > joueur2.resultatTxt[0].id) {
-              message.innerHTML = `${joueur1.pseudo} gagne avec son ${joueur1.resultatTxt[0].id}`
+              message.innerHTML = `${joueur1.pseudo} gagne et ${joueur2.pseudo} reçoit ${donneJeton(potJetons, joueur1.resultatTxt[0].nbJeton)} jetons`;
+              joueur2.jetons += donneJeton(potJetons, joueur1.resultatTxt[0].nbJeton);
               potJetons -= joueur1.resultatTxt[0].nbJeton;
-              joueur2.jetons += joueur1.resultatTxt[0].nbJeton
               mainPlayer = joueur2
               
 
             } else if (joueur2.resultatTxt[0].id > joueur1.resultatTxt[0].id) {
-              message.innerHTML = `${joueur2.pseudo} gagne avec son ${joueur2.resultatTxt[0].id}`
+              message.innerHTML = `${joueur2.pseudo} gagne et ${joueur1.pseudo} reçoit ${donneJeton(potJetons, joueur2.resultatTxt[0].nbJeton)} jetons`
+              joueur1.jetons += donneJeton(potJetons, joueur2.resultatTxt[0].nbJeton);
               potJetons -= joueur2.resultatTxt[0].nbJeton;
-              joueur1.jetons += joueur2.resultatTxt[0].nbJeton
               mainPlayer = joueur1
 
             } else {
@@ -240,8 +242,9 @@
 
 
         
-        
-        if (potJetons <= 0) potJetons = 0
+      //TODO gérer l'arrivée à zero, et gérer les jetons reçus quand il n'y en a plus assez.
+      // donc faire une vérification avant de chaque fois donner des jetons.  
+      if (potJetons <= 0) potJetons = 0
 
         //affichage du pot
         pot.innerHTML = `Jetons restants : ${potJetons}`
