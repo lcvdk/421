@@ -30,7 +30,8 @@
       <div>
         <div id="interaction">
           <button class="button" id="lanceJeu">Start</button>
-          <button class="button" id="lanceDe">jouer</button>
+          <button class="button" id="lanceCharge">jouer</button>
+          <button class="button" id="lanceDecharge">jouer</button>
         </div>
 
         <div id="interfaceJoueurs">
@@ -64,10 +65,14 @@
 
 
     //dom
-    const btnPlay = document.getElementById("lanceDe");
+    const btnPlayCharge = document.getElementById("lanceCharge");
+    const btnPlayDecharge = document.getElementById("lanceDecharge");
+    
+    
     const btnStart = document.getElementById("lanceJeu");
     const phase = document.getElementById("phase");
     const pot = document.getElementById("pot");
+    const affichageDes = document.getElementById("resultat")
     const resultatDe1 = document.getElementById("de1");
     const resultatDe2 = document.getElementById("de2");
     const resultatDe3 = document.getElementById("de3");
@@ -80,7 +85,9 @@
 
     pot.innerHTML = `Jetons restants : <span style="font-weight:bold">${potJetons}</span>`
 
-    //BOUTON START
+
+
+    //BOUTON START -------------------------------------------------------------------------
     btnStart.addEventListener('click', () => {
       let random = jouerDe(1, nbJoueur + 1)
       console.log('random ' + random)
@@ -106,12 +113,16 @@
       afficheJetonsJ1.innerHTML = `Jetons de ${joueur1.pseudo} : ${joueur1.jetons}`;
       afficheJetonsJ2.innerHTML = `Jetons de ${joueur2.pseudo} : ${joueur2.jetons}`;
 
-    })
+      btnStart.style.display= "none";
+      btnPlayCharge.style.display = "inline";
+      
 
+    })
+    //---------------------------------------------------------------End Bouton Start
 
     // BOUTON JOUER
-    btnPlay.addEventListener('click', () => {
-
+    btnPlayCharge.addEventListener('click', () => {
+      affichageDes.style.display = "flex";
       //Lance les jets de dés      
       let resultatLance = charge(mainPlayer)
       //affichage dans les 3 carrés
@@ -120,7 +131,7 @@
       resultatDe3.innerHTML = `<p>${resultatLance.de3}</p>`;
 
       //formatage du texte d'info  
-      let affichageInfo = `vous avez obtenu <span style="font-weight:bold">${resultatLance.resultatTxt[0].name}</span> qui vaut ${resultatLance.resultatTxt[0].nbJeton} jeton(s)`
+      let affichageInfo = `${mainPlayer.pseudo} a obtenu <span style="font-weight:bold">${resultatLance.resultatTxt[0].name}</span> qui vaut ${resultatLance.resultatTxt[0].nbJeton} jeton(s)`
       //affichage texte d'info
       message.innerHTML = affichageInfo
 
@@ -164,8 +175,8 @@
         console.log("J1 : " + joueur1.resultatTxt[0].nbJeton)
         console.log("J2 : " + joueur2.resultatTxt[0].nbJeton)
 
-        // 1ere etape comparer la valeur de Nombre de jeton du coup joué 
-        // TODO cas nenette
+        
+        //cas spécial nenette 221
 
         if(joueur1.resultatTxt[0].id == 221 && joueur2.resultatTxt[0].id == 221){
           message.innerHTML = `égalité pas de jeton attribué`
@@ -183,9 +194,12 @@
             mainPlayer = joueur2;
         }
 
+         //comparer la valeur de Nombre de jeton du tour  
+
+        
         if (joueur1.resultatTxt[0].nbJeton > joueur2.resultatTxt[0].nbJeton) {
           message.innerHTML = `${joueur1.pseudo} gagne et ${joueur2.pseudo} reçoit ${donneJeton(potJetons, joueur1.resultatTxt[0].nbJeton)} jetons`;
-          // adaptation du pot et du nbJeton du joueur concerné
+          
           joueur2.jetons += donneJeton(potJetons, joueur1.resultatTxt[0].nbJeton);
           potJetons -= joueur1.resultatTxt[0].nbJeton;
           mainPlayer = joueur2 
@@ -244,15 +258,28 @@
         
       //TODO gérer l'arrivée à zero, et gérer les jetons reçus quand il n'y en a plus assez.
       // donc faire une vérification avant de chaque fois donner des jetons.  
-      if (potJetons <= 0) potJetons = 0
+      if (potJetons <= 0) { 
+        potJetons = 0;
+        
+        //cacher le bouton "jouer"
+        btnPlayCharge.style.display = "none";
+        
+        //Cacher la phase et le pot
+        pot.innerHTML=""
+        phase.innerHTML="La décharge va commencer"
+
+        }
+
+        
 
         //affichage du pot
-        pot.innerHTML = `Jetons restants : ${potJetons}`
-
-        nbJetDe = nbJoueur
+        if (potJetons > 0) {
+          pot.innerHTML = `Jetons restants : ${potJetons}`
+          nbJetDe = nbJoueur
+        }
       }
 
-    });
+    });//------------------------------------------  end bouton jouer
 
 
 
